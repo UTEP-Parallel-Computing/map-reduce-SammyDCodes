@@ -89,6 +89,7 @@ Total Words Count Time: 2.3074974860000004
      - __The increase threads usage increases cumulative time usage for counting file but decreases the counting time overall__
      The increase of cumulative time usage is due to the system requires more time to allocate the computing resources. However, the average time usage, in other words, real time usage decreases. This is because the more threads have been used make each thread take care of less number files. Counting less files make each thread spent less file counting time.
    - When # of Threads > 8:
+
      Time usages are not changing. This is because our implemented threads are more than the cores numbers within CPU. Excessed number of threads will actually run as serial program.
 
 ## Result Analysis
