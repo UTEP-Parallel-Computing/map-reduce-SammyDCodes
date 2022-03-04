@@ -2,8 +2,8 @@ import os
 import re
 import timeit
 
-DOCUMENT_PATH = "./documents"
-# DOCUMENT_PATH = "./"
+# DOCUMENT_PATH = "./documents"
+DOCUMENT_PATH = "./"
 words = ["hate", "love", "death", "night", "sleep", "time", "henry", "hamlet","you", "my", "blood", "poison", "macbeth", "king", "heart", "honest"]
 
 def countWord(string, word):
