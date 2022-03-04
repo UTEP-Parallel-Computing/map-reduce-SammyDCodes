@@ -2,8 +2,8 @@ import os
 import re
 import timeit
 
-# DOCUMENT_PATH = "./documents"
-DOCUMENT_PATH = "./"
+DOCUMENT_PATH = "./documents"
+# DOCUMENT_PATH = "./"
 words = ["hate", "love", "death", "night", "sleep", "time", "henry", "hamlet","you", "my", "blood", "poison", "macbeth", "king", "heart", "honest"]
 
 def countWord(string, word):
@@ -33,7 +33,10 @@ def countDocument(file_dir):
     # Count words with given file directory
     
     # Initialize a dictionary to store counting corresponds to words
-    words_dict = makeWordsDict(words)
+    words_dict = makeWordsDict(words).copy()
+    
+    # Initialize a dictionary to store time usage
+    time_dict = {"Read":0, "Count":0}
     
     # Time the file reading process
     strat_read_time = timeit.default_timer()
@@ -54,7 +57,29 @@ def countDocument(file_dir):
     end_count_time = timeit.default_timer()
     
     # Compute each time period
-    file_read_time = end_read_time - strat_read_time
-    words_count_time = end_count_time - start_count_time
+    time_dict["Read"] = end_read_time - strat_read_time
+    time_dict["Count"] = end_count_time - start_count_time
     
-    return words_dict, file_read_time, words_count_time
+    return words_dict, time_dict
+
+def updateCountAndTime(local_count,local_time, other_count, other_time):
+    for word in other_count.keys():
+        local_count[word] += other_count[word]
+    for time in other_time.keys():
+        local_time[time] += other_time[time]
+    return local_count, local_time
+
+def countMultipleFiles(filedirs):
+    # Count multiple files
+    
+    # Initialize words count storage
+    total_words_dict = makeWordsDict(words).copy()
+    total_time_dict = {"Read":0, "Count":0}
+    
+    for f in filedirs:
+        # count words for file f
+        current_count_dict, current_time_dict = countDocument(f)
+        total_words_dict, total_time_dict = updateCountAndTime(total_words_dict, total_time_dict, \
+                                current_count_dict, current_time_dict)
+
+    return total_words_dict, total_time_dict

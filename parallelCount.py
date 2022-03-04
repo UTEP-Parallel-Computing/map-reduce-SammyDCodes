@@ -20,7 +20,7 @@ def parallelCountDocuments(file_dirs):
             
             print(f"Thread {p.thread_num} starts work.")
             
-            count_dict, read_time, count_time = countDocument(file_dirs[i]) # Count document
+            count_dict, time_dict = countDocument(file_dirs[i]) # Count document
             
             # Update shared data
             dictLock.acquire()
@@ -29,8 +29,8 @@ def parallelCountDocuments(file_dirs):
             for key in sharedDict.keys():
                 sharedDict[key] += count_dict[key]
             # Update file reading time and words counting time
-            sharedTime['Read'] += read_time
-            sharedTime['Count'] += count_time
+            sharedTime['Read'] += time_dict["Read"]
+            sharedTime['Count'] += time_dict["Count"]
             dictLock.release()
             
             print(f"Thread {p.thread_num} has done it's work on file {file_dirs[i]}")
